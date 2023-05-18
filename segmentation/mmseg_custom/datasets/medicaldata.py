@@ -12,11 +12,11 @@ class medicaldataset(CustomDataset):
     """
     CLASSES = ('background', 'finding')
 
-    PALETTE = [[0,0,0] , [255, 255, 255]]
+    PALETTE = [[0,0,0] , [128, 128, 128]]
 
     def __init__(self, **kwargs):
         super(medicaldataset, self).__init__(
             img_suffix='.png',
             seg_map_suffix='.png',
-            reduce_zero_label=False,ignore_index = 300,
+            reduce_zero_label=False,
             **kwargs)
