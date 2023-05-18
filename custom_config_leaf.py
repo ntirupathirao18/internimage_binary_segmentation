@@ -32,8 +32,10 @@ model = dict(
         num_classes=num_classes,
         norm_cfg=dict(type='SyncBN', requires_grad=True),
         align_corners=False,
-        loss_decode=dict(
-            type='DiceLoss', use_sigmoid=False, loss_weight=1.0)),
+        loss_decode=[dict(
+            type='DiceLoss', use_sigmoid=False, loss_weight=1.0) ,
+            dict(type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0) ,
+            ]) ,
     auxiliary_head=dict(
         type='FCNHead',
         in_channels=256,
@@ -45,8 +47,10 @@ model = dict(
         num_classes=num_classes,
         norm_cfg=dict(type='SyncBN', requires_grad=True),
         align_corners=False,
-        loss_decode=dict(
-            type='DiceLoss', use_sigmoid=False, loss_weight=0.4)),
+        loss_decode=[dict(
+            type='DiceLoss', use_sigmoid=False, loss_weight=0.4) ,
+            dict(type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4) ,
+            ]),
     train_cfg=dict(),
     test_cfg=dict(mode='whole'))
 
@@ -57,7 +61,7 @@ img_norm_cfg = dict(
 crop_size = (224, 224)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
-    dict(type='LoadAnnotations', reduce_zero_label=True),
+    dict(type='LoadAnnotations', reduce_zero_label=False),
     dict(type='Resize', ratio_range=(0.5, 2.0), multiscale_mode='range'),
     dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
     dict(type='RandomFlip', prob=0.5),
@@ -125,7 +129,7 @@ workflow = [('train', 1)]
 cudnn_benchmark = True
 optimizer = dict(
     type='AdamW',
-    lr=1e-03,
+    lr=6e-05,
     betas=(0.9, 0.999),
     weight_decay=0.05,
     constructor='CustomLayerDecayOptimizerConstructor',
@@ -134,10 +138,10 @@ optimizer = dict(
 optimizer_config = dict()
 lr_config = dict(
     policy='poly',
-    # warmup='linear',
-    # warmup_iters=1500,
-    # warmup_ratio=1e-06,
-    # power=1.0,
+    warmup='linear',
+    warmup_iters=1500,
+    warmup_ratio=1e-06,
+    power=1.0,
     min_lr=0.0,
     by_epoch=False)
 runner = dict(type='IterBasedRunner', max_iters=160000)
