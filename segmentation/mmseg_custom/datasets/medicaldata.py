@@ -16,7 +16,7 @@ class medicaldataset(CustomDataset):
 
     def __init__(self, **kwargs):
         super(medicaldataset, self).__init__(
-            img_suffix='.png',
+            img_suffix='.jpg',
             seg_map_suffix='.png',
             reduce_zero_label=False,
             **kwargs)
