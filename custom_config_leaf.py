@@ -58,7 +58,7 @@ model = dict(
 
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
-crop_size = (224, 224)
+crop_size = (256, 256)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations', reduce_zero_label=False),
@@ -100,18 +100,21 @@ data = dict(
         data_root=data_root,
         img_dir='images',
         ann_dir=ann_dir_name,
+        split = 'splits/train.txt',
         pipeline=train_pipeline),
     val=dict(
         type=dataset_type,
         data_root=data_root,
         img_dir='images',
         ann_dir=ann_dir_name,
+        split = 'splits/val.txt',
         pipeline=test_pipeline),
     test=dict(
         type=dataset_type,
         data_root=data_root,
           img_dir='images',
         ann_dir=ann_dir_name,
+        split = 'splits/val.txt',
         pipeline=test_pipeline))
 
 log_config = dict(
